@@ -1,0 +1,107 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+<title>Interactive Poll</title>
+<style>
+  #poll-container {
+    width: 400px;
+    margin: 20px auto;
+  }
+  .poll-option {
+    margin-bottom: 10px;
+  }
+  #results-container {
+    margin-top: 20px;
+  }
+  .result-bar {
+    height: 20px;
+    background-color: lightblue;
+    margin-bottom: 5px;
+    width: 0%;
+  }
+</style>
+</head>
+<body>
+
+<div id="poll-container">
+  <h2>Favorite Programming Language?</h2>
+  <form id="poll-form">
+    <div class="poll-option">
+      <input type="radio" id="option1" name="poll" value="JavaScript">
+      <label for="option1">JavaScript</label>
+    </div>
+    <div class="poll-option">
+      <input type="radio" id="option2" name="poll" value="Python">
+      <label for="option2">Python</label>
+    </div>
+    <div class="poll-option">
+      <input type="radio" id="option3" name="poll" value="Java">
+      <label for="option3">Java</label>
+    </div>
+    <div class="poll-option">
+      <input type="radio" id="option4" name="poll" value="C++">
+      <label for="option4">C++</label>
+    </div>
+    <button type="submit">Vote</button>
+  </form>
+</div>
+
+<div id="results-container">
+  <h2>Poll Results</h2>
+  <div id="javascript-result" class="result-bar"></div>
+  <div id="python-result" class="result-bar"></div>
+  <div id="java-result" class="result-bar"></div>
+  <div id="cpp-result" class="result-bar"></div>
+  <p id="javascript-percentage"></p>
+  <p id="python-percentage"></p>
+  <p id="java-percentage"></p>
+  <p id="cpp-percentage"></p>
+</div>
+
+<script>
+  const pollForm = document.getElementById('poll-form');
+  const javascriptResult = document.getElementById('javascript-result');
+  const pythonResult = document.getElementById('python-result');
+  const javaResult = document.getElementById('java-result');
+  const cppResult = document.getElementById('cpp-result');
+  const javascriptPercentage = document.getElementById('javascript-percentage');
+  const pythonPercentage = document.getElementById('python-percentage');
+  const javaPercentage = document.getElementById('java-percentage');
+  const cppPercentage = document.getElementById('cpp-percentage');
+
+  let votes = {
+    JavaScript: 0,
+    Python: 0,
+    Java: 0,
+    'C++': 0
+  };
+
+  pollForm.addEventListener('submit', function(event) {
+    event.preventDefault();
+    const selectedOption = document.querySelector('input[name="poll"]:checked');
+    if (selectedOption) {
+      votes[selectedOption.value]++;
+      updateResults();
+    }
+  });
+
+  function updateResults() {
+    const totalVotes = Object.values(votes).reduce((acc, val) => acc + val, 0);
+
+    if (totalVotes === 0) return;
+
+    javascriptResult.style.width = `${(votes.JavaScript / totalVotes) * 100}%`;
+    pythonResult.style.width = `${(votes.Python / totalVotes) * 100}%`;
+    javaResult.style.width = `${(votes.Java / totalVotes) * 100}%`;
+    cppResult.style.width = `${(votes['C++'] / totalVotes) * 100}%`;
+
+    javascriptPercentage.textContent = `JavaScript: ${((votes.JavaScript / totalVotes) * 100).toFixed(2)}%`;
+    pythonPercentage.textContent = `Python: ${((votes.Python / totalVotes) * 100).toFixed(2)}%`;
+    javaPercentage.textContent = `Java: ${((votes.Java / totalVotes) * 100).toFixed(2)}%`;
+    cppPercentage.textContent = `C++: ${((votes['C++'] / totalVotes) * 100).toFixed(2)}%`;
+  }
+</script>
+
+</body>
+</html>
